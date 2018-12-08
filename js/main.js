@@ -56,7 +56,7 @@ function removeClass (selector, className) {
   document.querySelector(selector).classList.remove(className);
 }
 
-function activeMap() {
+function activateMap() {
   removeClass('.map', 'map--faded')
 }
 
@@ -75,11 +75,15 @@ var housesData = getHouses(mapPinsWidth);
 
 var renderPin = function (pin) {
   var pinElement = similarPinTemplate.cloneNode(true);
+  var pinImage = new Image(40, 40);
 
   pinElement.style.left = pin.location.x + 'px';
   pinElement.style.top = pin.location.y + 'px';
-  pinElement.src = pin.author.avatar;
-  pinElement.alt = pin.offer.tittle;
+
+  pinImage.src = pin.author.avatar;
+  pinImage.alt = pin.offer.tittle;
+
+  pinElement.appendChild(pinImage);
 
   return pinElement;
 }
@@ -95,7 +99,7 @@ function getPins (housesData) {
 }
 
 // Вставка сгенерированных объектов в блок
-activeMap();
+activateMap();
 document.querySelector('.map__pins').appendChild(getPins(housesData));
 
 
