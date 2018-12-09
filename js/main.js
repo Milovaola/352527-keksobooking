@@ -1,7 +1,7 @@
 'use strict';
 
 // Задаем константы
-var HOUSE_TYPE = [ 'palace', 'flat', 'house' , 'bungalo'];
+var HOUSE_TYPE = ['palace', 'flat', 'house', 'bungalo'];
 var Y_MIN = 130;
 var Y_MAX = 630;
 var HOUSE_VALUE = 8;
@@ -20,15 +20,15 @@ function randomInteger(min, max) {
   var rand = min + Math.random() * (max - min);
   return Math.round(rand);
 }
-// Координта по Y
-var locationY = function(min, max) {
+// Координата по Y
+var locationY = function (min, max) {
   return randomInteger(min, max);
-}
+};
 
 // Координата по X
-var locationX = function(maxSize) {
+var locationX = function (maxSize) {
   return randomInteger(0, maxSize);
-}
+};
 
 // Функция, генерирующая объявление
 var getHouses = function (fieldSizeX) {
@@ -49,18 +49,12 @@ var getHouses = function (fieldSizeX) {
     });
   }
   return result;
-}
+};
 
 // Убираем класс неактивного состояния
-function removeClass (selector, className) {
+function removeClass(selector, className) {
   document.querySelector(selector).classList.remove(className);
 }
-
-function activateMap() {
-  removeClass('.map', 'map--faded')
-}
-
-
 
 var similarPinTemplate = document.querySelector('#pin')
     .content
@@ -86,20 +80,23 @@ var renderPin = function (pin) {
   pinElement.appendChild(pinImage);
 
   return pinElement;
-}
+};
 
-function getPins (housesData) {
+function getPins(data) {
   var housesPin = document.createDocumentFragment();
 
-  for (var i = 0; i < housesData.length; i++) {
-    housesPin.appendChild(renderPin(housesData[i]));
+  for (var i = 0; i < data.length; i++) {
+    housesPin.appendChild(renderPin(data[i]));
   }
 
   return housesPin;
 }
 
-// Вставка сгенерированных объектов в блок
+function activateMap() {
+  removeClass('.map', 'map--faded');
+  document.querySelector('.map__pins').appendChild(getPins(housesData));
+}
+
 activateMap();
-document.querySelector('.map__pins').appendChild(getPins(housesData));
 
 
