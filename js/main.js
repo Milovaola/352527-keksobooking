@@ -97,6 +97,80 @@ function activateMap() {
   document.querySelector('.map__pins').appendChild(getPins(housesData));
 }
 
-activateMap();
+function toggleNodesDisabled(nodes) {
+  for (var i = 0; i < nodes.length; i++) {
+    nodes[i].toggleAttribute('disabled');
+  }
+}
+
+var formName = document.querySelector('.ad-form');
+var adFormInputs = formName.getElementsByTagName('input');
+var adFormSelects = formName.getElementsByTagName('select');
+
+toggleNodesDisabled(adFormInputs);
+toggleNodesDisabled(adFormSelects);
+
+var addValue = document.getElementById('address');
+addValue.setAttribute('value', '570, 375');
+
+var pin = document.querySelector('.map__pin--main');
+var windowMap = document.querySelector('.map');
+var limits = {
+  top: Y_MIN,
+  right: windowMap.offsetWidth + windowMap.offsetLeft - pin.offsetWidth,
+  bottom: Y_MAX,
+  left: windowMap.offsetLeft + pin.offsetWidth
+};
+pin.onmousedown = function (evt) {
+  pin.style.position = 'absolute';
+  moveAt(evt);
+  document.body.appendChild(pin);
+  pin.style.zIndex = 1000;
+
+  function moveAt(evt) {
+    var newLocation = {
+      x: limits.left,
+      y: limits.top
+    };
+    if (evt.pageX > limits.right) {
+      newLocation.x = limits.right;
+    } else if (evt.pageX > limits.left) {
+      newLocation.x = evt.pageX;
+    }
+    if (evt.pageY > limits.bottom) {
+      newLocation.y = limits.bottom;
+    } else if (evt.pageY > limits.top) {
+      newLocation.y = evt.pageY;
+    }
+    relocate(newLocation);
+  }
+
+  function relocate(newLocation) {
+    pin.style.left = newLocation.x - pin.offsetWidth / 2 + 'px';
+    pin.style.top = newLocation.y - pin.offsetHeight / 2 + 'px';
+  }
+
+  document.onmousemove = function (evt) {
+    moveAt(evt);
+  };
+
+  pin.onmouseup = function (evt) {
+    var pinLocationX = evt.pageX - Math.round(pin.offsetWidth / 2);
+    var pinLocationY = evt.pageY + pin.offsetHeight;
+
+    document.onmousemove = null;
+    pin.onmouseup = null;
+
+    addValue.setAttribute('value', pinLocationX + ', ' + pinLocationY);
+  };
+};
+
+var active = document.querySelector('.map__pin--main');
+active.addEventListener('mouseup', function () {
+  formName.classList.remove('ad-form--disabled');
+  activateMap();
+  toggleNodesDisabled(adFormInputs);
+  toggleNodesDisabled(adFormSelects);
+});
 
 
