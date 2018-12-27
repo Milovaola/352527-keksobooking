@@ -51,7 +51,7 @@ var Y_MAX = 630;
 //   }
 //   return result;
 // };
-var cardTemplate = document.querySelector('#card')
+var cardTemplate = document.getElementById('card')
   .content
   .querySelector('.map__card');
 
@@ -129,14 +129,12 @@ function getFeatureList(features) {
 
 var housesData;
 
-function getPhoto(photos) {
-  var photoNode = document.createElement('img');
+function getPhoto(photos, photoNode) {
   var fotoList = document.createDocumentFragment();
-  var preview = new Image(30, 30);
   for (var i = 0; i < photos.length; i++) {
+    var preview = photoNode.cloneNode(true);
     preview.src = photos[i];
-    photoNode.classList.add('popup__photo');
-    fotoList.appendChild(preview.cloneNode(true));
+    fotoList.appendChild(preview);
   }
   return fotoList;
 }
@@ -163,8 +161,9 @@ function renderCards(index) {
     card.querySelector('.popup__features').remove();
   }
   if (housesData[index].offer.photos && housesData[index].offer.photos.length > 1) {
+    var imageNode = card.querySelector('.popup__photo');
     card.querySelector('.popup__photos').innerHTML = '';
-    card.querySelector('.popup__photos').appendChild(getPhoto(housesData[index].offer.photos));
+    card.querySelector('.popup__photos').appendChild(getPhoto(housesData[index].offer.photos, imageNode));
   } else {
     card.querySelector('.popup__photos').remove();
   }
@@ -243,8 +242,10 @@ var similarPinTemplate = document.querySelector('#pin')
 // Генерация меток
 
 var renderPin = function (pin) {
+
   var pinElement = similarPinTemplate.cloneNode(true);
-  var pinImage = new Image(40, 40);
+  var pinImage = pinElement.getElementsByTagName('img')[0];
+  pinElement.innerHTML = '';
 
   pinElement.style.left = pin.location.x + 'px';
   pinElement.style.top = pin.location.y + 'px';
@@ -253,7 +254,6 @@ var renderPin = function (pin) {
   pinImage.alt = pin.offer.tittle;
 
   pinElement.appendChild(pinImage);
-
   return pinElement;
 };
 
