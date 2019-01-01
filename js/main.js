@@ -287,6 +287,9 @@ toggleNodesDisabled(adFormSelects);
 var addValue = document.getElementById('address');
 addValue.setAttribute('value', '570, 375');
 
+var addPrice = document.getElementById('price');
+addPrice.setAttribute('placeholder', '1000');
+
 var pin = document.querySelector('.map__pin--main');
 var windowMap = document.querySelector('.map');
 
@@ -355,3 +358,67 @@ function activateApp() {
   active.removeEventListener('mouseup', activateApp);
 }
 active.addEventListener('mouseup', activateApp);
+
+var houseType = document.getElementById('type');
+houseType.addEventListener('change', onChangeHouseType);
+
+
+var elementPrice = document.getElementById('price');
+
+function onChangeHouseType() {
+  switch (houseType.value) {
+    case 'bungalo':
+      elementPrice.setAttribute('min', '0');
+      elementPrice.placeholder = '0';
+      break;
+    case 'flat':
+      elementPrice.setAttribute('min', '1000');
+      elementPrice.placeholder = '1000';
+      break;
+    case 'house':
+      elementPrice.setAttribute('min', '5000');
+      elementPrice.placeholder = '5000';
+      break;
+    case 'palace':
+      elementPrice.setAttribute('min', '10000');
+      elementPrice.placeholder = '10000';
+      break;
+    default:
+      break;
+  }
+}
+function validate() {
+  var price = document.getElementById('price');
+
+  // Проверка на соответствие цены
+  if (price.value >= price.max || price.value <= price.min) {
+    return false;
+  }
+
+  return true;
+}
+
+houseType.addEventListener('onSubmit', validate);
+
+
+var timeIn = document.getElementById('timein');
+timeIn.addEventListener('change', onChangeTime);
+
+
+var timeOut = document.getElementById('timeout');
+
+function onChangeTime() {
+  switch (timeIn.value) {
+    case '12:00':
+      timeOut.value = '12:00';
+      break;
+    case '13:00':
+      timeOut.value = '13:00';
+      break;
+    case '14:00':
+      timeOut.value = '14:00';
+      break;
+    default:
+      break;
+  }
+}
