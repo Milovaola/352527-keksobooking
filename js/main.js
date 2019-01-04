@@ -362,31 +362,31 @@ active.addEventListener('mouseup', activateApp);
 var houseType = document.getElementById('type');
 houseType.addEventListener('change', onChangeHouseType);
 
+var types = {
+  bungalo: 0,
+  flat: 1000,
+  house: 5000,
+  palace: 10000
+};
 
 var elementPrice = document.getElementById('price');
 
 function onChangeHouseType() {
-  switch (houseType.value) {
-    case 'bungalo':
-      elementPrice.setAttribute('min', '0');
-      elementPrice.placeholder = '0';
-      break;
-    case 'flat':
-      elementPrice.setAttribute('min', '1000');
-      elementPrice.placeholder = '1000';
-      break;
-    case 'house':
-      elementPrice.setAttribute('min', '5000');
-      elementPrice.placeholder = '5000';
-      break;
-    case 'palace':
-      elementPrice.setAttribute('min', '10000');
-      elementPrice.placeholder = '10000';
-      break;
-    default:
-      break;
+  if (houseType.value === 'bungalo') {
+    elementPrice.setAttribute('min', types.bungalo);
+    elementPrice.placeholder = types.bungalo;
+  } else if (houseType.value === 'flat') {
+    elementPrice.setAttribute('min', types.flat);
+    elementPrice.placeholder = types.flat;
+  } else if (houseType.value === 'house') {
+    elementPrice.setAttribute('min', types.house);
+    elementPrice.placeholder = types.house;
+  } else if (houseType.value === 'palace') {
+    elementPrice.setAttribute('min', types.palace);
+    elementPrice.placeholder = types.palace;
   }
 }
+
 function validate() {
   var price = document.getElementById('price');
 
@@ -400,25 +400,15 @@ function validate() {
 
 houseType.addEventListener('onSubmit', validate);
 
-
 var timeIn = document.getElementById('timein');
-timeIn.addEventListener('change', onChangeTime);
-
-
 var timeOut = document.getElementById('timeout');
 
-function onChangeTime() {
-  switch (timeIn.value) {
-    case '12:00':
-      timeOut.value = '12:00';
-      break;
-    case '13:00':
-      timeOut.value = '13:00';
-      break;
-    case '14:00':
-      timeOut.value = '14:00';
-      break;
-    default:
-      break;
-  }
+timeIn.addEventListener('change', onChangeTime);
+timeOut.addEventListener('change', onChangeTime);
+
+function onChangeTime(event) {
+  event.preventDefault();
+  timeIn.value = event.target.value;
+  timeOut.value = event.target.value;
 }
+
