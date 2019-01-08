@@ -262,21 +262,22 @@ var limits = {
 var isActive = false;
 
 function moveAt(evt) {
-
   var newLocation = {
     x: limits.left,
     y: limits.top
   };
+  var pinOffsetX = pin.offsetWidth / 2;
 
-  if (evt.pageX > limits.right) {
-    newLocation.x = limits.right;
-  } else if (evt.pageX < limits.left) {
+  if (evt.pageX + pinOffsetX > limits.right) {
+    newLocation.x = limits.right - pin.offsetWidth;
+  } else if (evt.pageX - pinOffsetX < limits.left) {
     newLocation.x = limits.left;
   } else {
-    newLocation.x = evt.pageX;
+    newLocation.x = evt.pageX - pinOffsetX;
   }
 
-  var pinOffsetY = pin.offsetHeight / 2; // Курсор по центру пина
+  var pinOffsetY = pin.offsetHeight / 2; // Курсор по центру высоты пина
+
 
   if (evt.pageY - pinOffsetY < limits.top) { // Если курсор ушел за пределы высоты карты вверх
     newLocation.y = limits.top - pinOffsetY;
@@ -299,10 +300,10 @@ function moveAt(evt) {
 }
 
 function relocate(newLocation) {
-  pin.style.left = newLocation.x - pin.offsetWidth / 2 + 'px';
+  pin.style.left = newLocation.x + 'px';
   pin.style.top = newLocation.y + 'px';
 
-  addValue.setAttribute('value', (newLocation.x - 120) + ', ' + (newLocation.y + pin.offsetHeight / 2));
+  addValue.setAttribute('value', (newLocation.x - 120 + pin.offsetWidth / 2) + ', ' + (newLocation.y + pin.offsetHeight / 2));
 }
 
 pin.addEventListener('mousedown', function (evt) {
