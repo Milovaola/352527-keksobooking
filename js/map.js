@@ -39,7 +39,7 @@
     return housesPin;
   }
   function activateMap() {
-    window.load(window.active.successHandler, window.active.errorHandler);
+    window.load(window.requests.successHandler, window.requests.errorHandler);
   }
   window.map = {
     searchPins: searchPins,

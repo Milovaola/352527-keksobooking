@@ -8,7 +8,7 @@ var successHandler = function (response) {
 
   window.util.removeClass('.map', 'map--faded');
 
-  window.active.housesData = response.slice(0);
+  window.requests.housesData = response.slice(0);
 
   window.map.searchPins();
 };
@@ -25,7 +25,7 @@ var errorHandler = function (errorMessage) {
   document.body.insertAdjacentElement('afterbegin', errorElement);
 };
 
-window.active = {
+window.requests = {
   housesData: null,
   successHandler: successHandler,
   errorHandler: errorHandler
