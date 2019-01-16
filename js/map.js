@@ -38,22 +38,13 @@
 
     return housesPin;
   }
-  function getCards(cards) {
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < cards.length; i++) {
-      fragment.appendChild(window.renderCards(cards[i]));
-    }
-
-    window.windowMap.appendChild(fragment);
-  }
   function activateMap() {
     window.load(window.active.successHandler, window.active.errorHandler);
   }
   window.map = {
     searchPins: searchPins,
     getPins: getPins,
-    getCards: getCards,
     activateMap: activateMap
   };
+
 })();

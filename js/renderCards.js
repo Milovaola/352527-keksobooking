@@ -38,35 +38,35 @@
     var closeCard = card.querySelector('.popup__close');
 
     // Наполняем карточку данными
-    card.querySelector('.popup__avatar').src = index.author.avatar;
-    card.querySelector('.popup__title').innerHTML = index.offer.title;
-    card.querySelector('.popup__text--address').innerHTML = index.offer.address;
-    card.querySelector('.popup__text--price').innerHTML = window.util.getPrice(index.offer.price);
-    card.querySelector('.popup__type').innerHTML = window.util.translate(index.offer.type);
-    card.querySelector('.popup__text--capacity').innerHTML = window.util.valueRoomsAndGuests(index.offer.rooms, index.offer.guests);
-    card.querySelector('.popup__text--time').innerHTML = window.util.timeCheck(index.offer.checkin, index.offer.checkout);
+    card.querySelector('.popup__avatar').src = window.active.housesData[index].author.avatar;
+    card.querySelector('.popup__title').innerHTML = window.active.housesData[index].offer.title;
+    card.querySelector('.popup__text--address').innerHTML = window.active.housesData[index].offer.address;
+    card.querySelector('.popup__text--price').innerHTML = window.util.getPrice(window.active.housesData[index].offer.price);
+    card.querySelector('.popup__type').innerHTML = window.util.translate(window.active.housesData[index].offer.type);
+    card.querySelector('.popup__text--capacity').innerHTML = window.util.valueRoomsAndGuests(window.active.housesData[index].offer.rooms, window.active.housesData[index].offer.guests);
+    card.querySelector('.popup__text--time').innerHTML = window.util.timeCheck(window.active.housesData[index].offer.checkin, window.active.housesData[index].offer.checkout);
 
-    if (index.offer.features && index.offer.features.length > 1) {
+    if (window.active.housesData[index].offer.features && window.active.housesData[index].offer.features.length > 1) {
       card.querySelector('.popup__features').innerHTML = '';
-      card.querySelector('.popup__features').appendChild(getFeatureList(index.offer.features));
+      card.querySelector('.popup__features').appendChild(getFeatureList(window.active.housesData[index].offer.features));
     } else {
       card.querySelector('.popup__features').remove();
     }
-    if (index.offer.photos && index.offer.photos.length > 1) {
+    if (window.active.housesData[index].offer.photos && window.active.housesData[index].offer.photos.length > 1) {
       var imageNode = card.querySelector('.popup__photo');
       card.querySelector('.popup__photos').innerHTML = '';
-      card.querySelector('.popup__photos').appendChild(getPhoto(index.offer.photos, imageNode));
+      card.querySelector('.popup__photos').appendChild(getPhoto(window.active.housesData[index].offer.photos, imageNode));
     } else {
       card.querySelector('.popup__photos').remove();
     }
-    card.querySelector('.popup__description').innerHTML = index.offer.description;
+    card.querySelector('.popup__description').innerHTML = window.active.housesData[index].offer.description;
 
     // Скрываем и добавляем идентификатор
     card.style.display = 'none';
     card.setAttribute('id', 'card__' + index);
 
     // Добавляем в DOM-дерево
-    // window.windowMap.appendChild(card);
+    window.windowMap.appendChild(card);
 
     closeCard.addEventListener('click', function () {
       card.classList.remove('card--active');
@@ -74,3 +74,4 @@
     });
   };
 })();
+
