@@ -39,11 +39,12 @@
     return housesPin;
   }
   function activateMap() {
-    window.data.getRemoteData();
+    window.load(window.requests.successHandler, window.requests.errorHandler);
   }
   window.map = {
     searchPins: searchPins,
     getPins: getPins,
     activateMap: activateMap
   };
+
 })();
