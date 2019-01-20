@@ -8,7 +8,6 @@
   // Генерация меток
 
   window.renderPin = function (pin) {
-
     var pinElement = similarPinTemplate.cloneNode(true);
     var pinImage = pinElement.getElementsByTagName('img')[0];
     pinElement.innerHTML = '';
@@ -20,6 +19,7 @@
     pinImage.alt = pin.offer.tittle;
 
     pinElement.appendChild(pinImage);
+
     return pinElement;
   };
 

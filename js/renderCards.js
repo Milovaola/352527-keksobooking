@@ -32,46 +32,46 @@
     .content
     .querySelector('.map__card');
 
-  window.renderCards = function (index) {
+  window.renderCard = function (houseData, index) {
     // Клонируем DOM-узел
     var card = cardTemplate.cloneNode(true);
-    var closeCard = card.querySelector('.popup__close');
+    var cardCloseIconNode = card.querySelector('.popup__close');
 
     // Наполняем карточку данными
-    card.querySelector('.popup__avatar').src = window.requests.housesData[index].author.avatar;
-    card.querySelector('.popup__title').innerHTML = window.requests.housesData[index].offer.title;
-    card.querySelector('.popup__text--address').innerHTML = window.requests.housesData[index].offer.address;
-    card.querySelector('.popup__text--price').innerHTML = window.util.getPrice(window.requests.housesData[index].offer.price);
-    card.querySelector('.popup__type').innerHTML = window.util.translate(window.requests.housesData[index].offer.type);
-    card.querySelector('.popup__text--capacity').innerHTML = window.util.valueRoomsAndGuests(window.requests.housesData[index].offer.rooms, window.requests.housesData[index].offer.guests);
-    card.querySelector('.popup__text--time').innerHTML = window.util.timeCheck(window.requests.housesData[index].offer.checkin, window.requests.housesData[index].offer.checkout);
+    card.querySelector('.popup__avatar').src = houseData.author.avatar;
+    card.querySelector('.popup__title').innerHTML = houseData.offer.title;
+    card.querySelector('.popup__text--address').innerHTML = houseData.offer.address;
+    card.querySelector('.popup__text--price').innerHTML = window.utilities.getPrice(houseData.offer.price);
+    card.querySelector('.popup__type').innerHTML = window.utilities.translate(houseData.offer.type);
+    card.querySelector('.popup__text--capacity').innerHTML = window.utilities.valueRoomsAndGuests(houseData.offer.rooms, houseData.offer.guests);
+    card.querySelector('.popup__text--time').innerHTML = window.utilities.timeCheck(houseData.offer.checkin, houseData.offer.checkout);
 
-    if (window.requests.housesData[index].offer.features && window.requests.housesData[index].offer.features.length > 1) {
+    if (houseData.offer.features && houseData.offer.features.length > 1) {
       card.querySelector('.popup__features').innerHTML = '';
-      card.querySelector('.popup__features').appendChild(getFeatureList(window.requests.housesData[index].offer.features));
+      card.querySelector('.popup__features').appendChild(getFeatureList(houseData.offer.features));
     } else {
       card.querySelector('.popup__features').remove();
     }
-    if (window.requests.housesData[index].offer.photos && window.requests.housesData[index].offer.photos.length > 1) {
+    if (houseData.offer.photos && houseData.offer.photos.length > 1) {
       var imageNode = card.querySelector('.popup__photo');
       card.querySelector('.popup__photos').innerHTML = '';
-      card.querySelector('.popup__photos').appendChild(getPhoto(window.requests.housesData[index].offer.photos, imageNode));
+      card.querySelector('.popup__photos').appendChild(getPhoto(houseData.offer.photos, imageNode));
     } else {
       card.querySelector('.popup__photos').remove();
     }
-    card.querySelector('.popup__description').innerHTML = window.requests.housesData[index].offer.description;
+    card.querySelector('.popup__description').innerHTML = houseData.offer.description;
 
     // Скрываем и добавляем идентификатор
     card.style.display = 'none';
     card.setAttribute('id', 'card__' + index);
 
-    // Добавляем в DOM-дерево
-    window.windowMap.appendChild(card);
-
-    closeCard.addEventListener('click', function () {
+    // Вешаю слушателя на крестик объявления
+    cardCloseIconNode.addEventListener('click', function () {
       card.classList.remove('card--active');
       card.style.display = 'none';
     });
+
+    return card;
   };
 })();
 

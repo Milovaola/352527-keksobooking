@@ -62,7 +62,24 @@
       }, DEBOUNCE_INTERVAL);
     };
   }
-  window.util = {
+
+  // Переключение disabled state у коллекции Node
+  function setDisabledStateToNodeList(nodeList, state) {
+    if (typeof state === 'undefined') {
+      state = true;
+    }
+
+    Array.from(nodeList)
+      .forEach(function (node) {
+        if (state) {
+          node.setAttribute('disabled', true);
+        } else {
+          node.removeAttribute('disabled');
+        }
+      });
+  }
+
+  window.utilities = {
     toggleDisplay: toggleDisplay,
     translate: translate,
     getPrice: getPrice,
@@ -70,6 +87,7 @@
     timeCheck: timeCheck,
     removeClass: removeClass,
     toggleNodesDisabled: toggleNodesDisabled,
-    debounce: debounce
+    debounce: debounce,
+    setDisabledStateToNodeList: setDisabledStateToNodeList,
   };
 })();

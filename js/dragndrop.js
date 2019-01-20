@@ -44,8 +44,8 @@
     if (!isActive) {
       window.form.formName.classList.remove('ad-form--disabled');
       window.map.activateMap();
-      window.util.toggleNodesDisabled(window.form.adFormInputs);
-      window.util.toggleNodesDisabled(window.form.adFormSelects);
+      window.utilities.toggleNodesDisabled(window.form.adFormInputs);
+      window.utilities.toggleNodesDisabled(window.form.adFormSelects);
       isActive = true;
     }
 
