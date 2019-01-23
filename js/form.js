@@ -4,8 +4,8 @@
   var adFormInputs = formName.getElementsByTagName('input');
   var adFormSelects = formName.getElementsByTagName('select');
 
-  window.util.toggleNodesDisabled(adFormInputs);
-  window.util.toggleNodesDisabled(adFormSelects);
+  window.utilities.toggleNodesDisabled(adFormInputs);
+  window.utilities.toggleNodesDisabled(adFormSelects);
 
   var addValue = document.getElementById('address');
   addValue.setAttribute('value', '570, 375');

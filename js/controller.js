@@ -7,7 +7,7 @@
 
     if (evt.keyCode === 27 && activeCard) {
       activePin.classList.remove('map__pin--active');
-      window.util.toggleDisplay(activeCard);
+      window.utilities.toggleDisplay(activeCard);
     }
   });
 })();

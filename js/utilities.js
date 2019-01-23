@@ -47,13 +47,47 @@
       nodes[i].toggleAttribute('disabled');
     }
   }
-  window.util = {
+  // функция устранения дребезга
+  function debounce(cb) {
+    var DEBOUNCE_INTERVAL = 500;
+    var lastTimeout = null;
+
+    return function () {
+      var parameters = arguments;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        cb.apply(null, parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
+  }
+
+  // Переключение disabled state у коллекции Node
+  function setDisabledStateToNodeList(nodeList, state) {
+    if (typeof state === 'undefined') {
+      state = true;
+    }
+
+    Array.from(nodeList)
+      .forEach(function (node) {
+        if (state) {
+          node.setAttribute('disabled', true);
+        } else {
+          node.removeAttribute('disabled');
+        }
+      });
+  }
+
+  window.utilities = {
     toggleDisplay: toggleDisplay,
     translate: translate,
     getPrice: getPrice,
     valueRoomsAndGuests: valueRoomsAndGuests,
     timeCheck: timeCheck,
     removeClass: removeClass,
-    toggleNodesDisabled: toggleNodesDisabled
+    toggleNodesDisabled: toggleNodesDisabled,
+    debounce: debounce,
+    setDisabledStateToNodeList: setDisabledStateToNodeList,
   };
 })();

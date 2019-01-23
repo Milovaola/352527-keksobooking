@@ -2,7 +2,7 @@
 // Управление пином и карточкой объявления
 
 (function () {
-  function pinHandler(node, index) {
+  function setPinHandler(node, index) {
     node.addEventListener('click', function () {
       var activePin = document.querySelector('.map__pin--active');
       var card = document.getElementById('card__' + index);
@@ -13,38 +13,64 @@
         activePin.classList.remove('map__pin--active');
         node.classList.add('map__pin--active');
 
-        window.util.toggleDisplay(activeCard);
-        window.util.toggleDisplay(card);
+        window.utilities.toggleDisplay(activeCard);
+        window.utilities.toggleDisplay(card);
       } else {
         node.classList.toggle('map__pin--active');
-        window.util.toggleDisplay(card);
+        window.utilities.toggleDisplay(card);
       }
     });
   }
-  function searchPins() {
-    var pins = document.querySelectorAll('.map__pin');
 
-    for (var i = 0; i < pins.length - 1; i++) {
-      pinHandler(pins[i], i);
-      window.renderCards(i);
-    }
-  }
-  function getPins(data) {
-    var housesPin = document.createDocumentFragment();
+  function renderPins(data) {
+    var pinList = document.createDocumentFragment();
+    var cardList = document.createDocumentFragment();
 
     for (var i = 0; i < data.length; i++) {
-      housesPin.appendChild(window.renderPin(data[i]));
+      var pinNode = window.renderPin(data[i]);
+      var cardNode = window.renderCard(data[i], i);
+
+      // Вешаю слушателя на пин
+      setPinHandler(pinNode, i);
+
+      pinList.appendChild(pinNode);
+      cardList.appendChild(cardNode);
     }
 
-    return housesPin;
+    document.querySelector('.map__pins')
+      .appendChild(pinList);
+
+    renderCards(cardList);
   }
+
+  function renderCards(cardList) {
+    var cardsContainer = document.getElementsByClassName('map__cards')[0];
+
+    // Если контейнера для карточек не существует на странице
+    // создаю его и задаю ему класс, а если существует
+    // очищаю его содержимое
+    if (!cardsContainer) {
+      cardsContainer = document.createElement('div');
+      cardsContainer.className = 'map__cards';
+
+      // Добавляю контейнер на страницу
+      document.getElementsByClassName('map')[0]
+        .appendChild(cardsContainer);
+    } else {
+      cardsContainer.innerHTML = '';
+    }
+
+    // Наполняю контейнер карточками
+    cardsContainer.appendChild(cardList);
+  }
+
   function activateMap() {
     window.load(window.requests.successHandler, window.requests.errorHandler);
   }
+
   window.map = {
-    searchPins: searchPins,
-    getPins: getPins,
-    activateMap: activateMap
+    activateMap: activateMap,
+    renderPins: renderPins
   };
 
 })();
