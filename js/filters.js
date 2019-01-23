@@ -17,10 +17,6 @@
     .getElementsByTagName('input');
   var mapContainer = document.querySelector('.map__pins');
 
-  function filterByLimit(housesData) {
-    return housesData.slice(0, PIN_LIMITS);
-  }
-
   function filterByType(houseData) {
     if (typeNode.value === 'any') {
       return true;
@@ -85,10 +81,8 @@
       .filter(filterByPrice)
       .filter(filterByGuests)
       .filter(filterByRooms)
-      .filter(filterByFeatures);
-
-    // Лимит 5 пинов
-    filteredData = filterByLimit(filteredData);
+      .filter(filterByFeatures)
+      .slice(0, PIN_LIMITS);
 
     // Скрытие карточки в том случае, если она открыта
     if (activeCard) {
@@ -110,16 +104,32 @@
     activate();
   });
 
+  // function standartFilter(filterNode) {
+  //   return filterNode.value === 'any';
+  // }
+
   function activate() {
     window.utilities
       .setDisabledStateToNodeList(filterItems, false);
   }
 
+
   function deactivate() {
     window.utilities
       .setDisabledStateToNodeList(filterItems);
+
   }
 
+  function resetFilters() {
+    Array.from(filterContainerNode)
+      .forEach(function (filterNode) {
+        if (filterNode.type === 'select-one') {
+          filterNode.value = 'any';
+        } else {
+          filterNode.checked = false;
+        }
+      });
+  }
   function initialization() {
     typeNode.addEventListener('change', handleFilter);
     priceNode.addEventListener('change', handleFilter);
@@ -137,13 +147,14 @@
     activate();
   }
 
-  // Перевод формы в disabled по-умолчанию
+  // // Перевод формы в disabled по-умолчанию
   deactivate();
 
   window.filters = {
+    resetFilters: resetFilters,
     initialization: initialization,
     activate: activate,
     deactivate: deactivate,
-    filterByLimit: filterByLimit
+    PIN_LIMITS: PIN_LIMITS
   };
 })();

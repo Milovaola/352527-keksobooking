@@ -1,17 +1,21 @@
 'use strict';
 (function () {
   var formName = document.querySelector('.ad-form');
-  var adFormInputs = formName.getElementsByTagName('input');
-  var adFormSelects = formName.getElementsByTagName('select');
+  var adFormfieldset = formName.getElementsByTagName('fieldset');
 
-  window.utilities.toggleNodesDisabled(adFormInputs);
-  window.utilities.toggleNodesDisabled(adFormSelects);
+  window.utilities.toggleNodesDisabled(adFormfieldset);
 
   var addValue = document.getElementById('address');
-  addValue.setAttribute('value', '570, 375');
 
-  var addPrice = document.getElementById('price');
-  addPrice.setAttribute('placeholder', '1000');
+  function standartState() {
+    addValue.setAttribute('value', '570, 375');
+    var addPrice = document.getElementById('price');
+    addPrice.setAttribute('placeholder', '1000');
+    document.querySelector('.map__pins')
+      .appendChild(window.pin);
+  }
+  standartState();
+
   // Зависимость изменения цены от типа жилья
   var houseType = document.getElementById('type');
   houseType.addEventListener('change', onChangeHouseType);
@@ -24,6 +28,7 @@
   };
 
   var elementPrice = document.getElementById('price');
+
 
   function onChangeHouseType() {
     if (houseType.value === 'bungalo') {
@@ -67,11 +72,85 @@
     timeIn.value = event.target.value;
     timeOut.value = event.target.value;
   }
+  // Зависимость изменения от вместимости от количества комнат
+  var roomType = document.getElementById('room_number');
+  var capacityType = document.getElementById('capacity');
+  var capacityOptions = capacityType.querySelectorAll('option');
+  var roomsTypeValue = {
+    1: [1],
+    2: [1, 2],
+    3: [1, 2, 3],
+    100: [0]
+  };
+  function disableСapacity(input) {
+    for (var i = 0; i < capacityOptions.length; i++) {
+      capacityOptions[i].disabled = true;
+    }
+    for (var j = 0; j < roomsTypeValue[input].length; j++) {
+      capacityType.querySelector('option' + '[value="' + roomsTypeValue[input][j] + '"]').disabled = false;
+      capacityType.value = roomsTypeValue[input][j];
+    }
+  }
+  roomType.addEventListener('change', function () {
+    disableСapacity(roomType.value);
+  });
+
+  var submitForm = document.querySelector('.ad-form__submit');
+  // Проверяем соответствие указанному количеству комнат и гостей
+  // в случае несоответствия - вывожу сообщение
+  function validationPlace() {
+    var capacityGuests = roomsTypeValue[roomType.value];
+    if (capacityGuests.indexOf(+capacityType.value)) {
+      capacityType.setCustomValidity('Выберите меньшее количество гостей');
+    } else {
+      capacityType.setCustomValidity('');
+    }
+  }
+
+  roomType.addEventListener('change', function (evt) {
+    evt.target.setCustomValidity('');
+  });
+
+  capacityType.addEventListener('change', function (evt) {
+    evt.target.setCustomValidity('');
+  });
+
+  submitForm.addEventListener('click', function () {
+    validationPlace();
+  });
+
+
+  function submitSuccess() {
+    adForm.reset();
+    window.map.deactivateMap();
+    standartState();
+    window.utilities.sendMessage('#success', '.success');
+
+  }
+
+  function submitError() {
+    window.requests.errorHandler();
+  }
+  // Данные формы для отправки на сервер
+  var adForm = document.querySelector('.ad-form');
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    var formData = new FormData(adForm);
+    window.load.upload(submitSuccess, submitError, formData);
+  });
+
+  // Сброс формы
+  var resetForm = document.querySelector('.ad-form__reset');
+
+  resetForm.addEventListener('click', function () {
+    standartState();
+    window.map.deactivateMap();
+  });
 
   window.form = {
+    onChangeHouseType: onChangeHouseType,
     formName: formName,
-    adFormInputs: adFormInputs,
-    adFormSelects: adFormSelects,
+    adFormfieldset: adFormfieldset,
     addValue: addValue
   };
 })();

@@ -3,8 +3,8 @@
   var Y_MIN = 130;
   var Y_MAX = 630;
   var pin = document.querySelector('.map__pin--main');
+  window.pin = pin;
   var windowMap = document.querySelector('.map');
-  window.windowMap = windowMap;
 
   var limits = {
     left: windowMap.offsetLeft,
@@ -12,21 +12,22 @@
     right: windowMap.offsetWidth + windowMap.offsetLeft,
     bottom: Y_MAX,
   };
-  var isActive = false;
+  window.isActive = false;
 
   function moveAt(evt) {
     var newLocation = {
       x: limits.left,
       y: limits.top
     };
+
     var pinOffsetX = pin.offsetWidth / 2;
 
     if (evt.pageX + pinOffsetX > limits.right) {
-      newLocation.x = limits.right - pin.offsetWidth;
+      newLocation.x = limits.right - windowMap.offsetLeft - pin.offsetWidth;
     } else if (evt.pageX - pinOffsetX < limits.left) {
-      newLocation.x = limits.left;
+      newLocation.x = limits.left - windowMap.offsetLeft;
     } else {
-      newLocation.x = evt.pageX - pinOffsetX;
+      newLocation.x = evt.pageX - windowMap.offsetLeft - pinOffsetX;
     }
 
     var pinOffsetY = pin.offsetHeight / 2; // Курсор по центру высоты пина
@@ -41,12 +42,15 @@
     }
 
 
-    if (!isActive) {
+    if (!window.isActive) {
       window.form.formName.classList.remove('ad-form--disabled');
+      window.form.onChangeHouseType();
       window.map.activateMap();
-      window.utilities.toggleNodesDisabled(window.form.adFormInputs);
-      window.utilities.toggleNodesDisabled(window.form.adFormSelects);
-      isActive = true;
+      Array.from(window.form.adFormfieldset)
+        .forEach(function (fieldseteItem) {
+          fieldseteItem.removeAttribute('disabled');
+        });
+      window.isActive = true;
     }
 
     relocate(newLocation);
@@ -56,14 +60,11 @@
     pin.style.left = newLocation.x + 'px';
     pin.style.top = newLocation.y + 'px';
 
-    window.form.addValue.setAttribute('value', Math.round((newLocation.x - 120 + pin.offsetWidth / 2)) + ', ' + (newLocation.y + pin.offsetHeight / 2));
+    window.form.addValue.setAttribute('value', Math.round((newLocation.x + pin.offsetWidth / 2)) + ', ' + (newLocation.y + pin.offsetHeight / 2));
   }
 
   pin.addEventListener('mousedown', function (evt) {
-    pin.style.position = 'absolute';
     moveAt(evt);
-    document.body.appendChild(pin);
-    pin.style.zIndex = 1000;
 
     document.addEventListener('mousemove', moveAt);
     document.addEventListener('mouseup', onMouseUp);
@@ -73,5 +74,6 @@
     document.removeEventListener('mousemove', moveAt);
     document.removeEventListener('mouseup', onMouseUp);
   }
+
 })();
 

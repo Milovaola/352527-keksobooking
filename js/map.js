@@ -39,7 +39,6 @@
 
     document.querySelector('.map__pins')
       .appendChild(pinList);
-
     renderCards(cardList);
   }
 
@@ -63,13 +62,41 @@
     // Наполняю контейнер карточками
     cardsContainer.appendChild(cardList);
   }
+  // Удаление пинов с карты
+  function pinsDelete() {
+    var mapPinsItems = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    for (var i = 0; i < mapPinsItems.length; i++) {
+      mapPinsItems[i].remove();
+    }
+  }
+  // Удаление с карты карточек объявления
+  function deleteCardOnMap() {
+    var mapCard = document.querySelector('.card--active');
+    if (mapCard) {
+      mapCard.remove();
+    }
+  }
 
   function activateMap() {
-    window.load(window.requests.successHandler, window.requests.errorHandler);
+    window.load.load(window.requests.successHandler, window.requests.errorHandler);
+  }
+
+  function deactivateMap() {
+    pinsDelete();
+    deleteCardOnMap();
+    window.utilities.addClass('.map', 'map--faded');
+    window.pin.style.top = 375 + 'px';
+    window.pin.style.left = 570 + 'px';
+    window.isActive = false;
+    window.filters.deactivate();
+    window.filters.resetFilters();
   }
 
   window.map = {
+    pinsDelete: pinsDelete,
+    deleteCardOnMap: deleteCardOnMap,
     activateMap: activateMap,
+    deactivateMap: deactivateMap,
     renderPins: renderPins
   };
 

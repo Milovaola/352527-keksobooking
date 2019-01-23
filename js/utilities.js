@@ -41,6 +41,10 @@
   function removeClass(selector, className) {
     document.querySelector(selector).classList.remove(className);
   }
+  // Добавляем класс неактивного состояния
+  function addClass(selector, className) {
+    document.querySelector(selector).classList.add(className);
+  }
   // Перевод нод в неактивное состояние
   function toggleNodesDisabled(nodes) {
     for (var i = 0; i < nodes.length; i++) {
@@ -79,6 +83,26 @@
       });
   }
 
+  // Сообщение при отправке запроса на сервер
+  function sendMessage(selector, className) {
+    var messageTemplate = document.querySelector(selector)
+      .content
+      .querySelector(className);
+    var messageElement = messageTemplate.cloneNode(true);
+    var mainBlock = document.querySelector('main');
+    mainBlock.insertAdjacentElement('afterbegin', messageElement);
+
+    messageElement.classList.remove('hidden');
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === 27 && messageElement) {
+        messageElement.classList.add('hidden');
+      }
+    });
+    document.addEventListener('click', function () {
+      messageElement.classList.add('hidden');
+    });
+  }
+
   window.utilities = {
     toggleDisplay: toggleDisplay,
     translate: translate,
@@ -86,8 +110,10 @@
     valueRoomsAndGuests: valueRoomsAndGuests,
     timeCheck: timeCheck,
     removeClass: removeClass,
+    addClass: addClass,
     toggleNodesDisabled: toggleNodesDisabled,
     debounce: debounce,
     setDisabledStateToNodeList: setDisabledStateToNodeList,
+    sendMessage: sendMessage
   };
 })();
