@@ -2,7 +2,7 @@
 
 (function () {
   var PIN_LIMITS = 5;
-  var PRICES = {
+  var Prices = {
     LOW: 10000,
     HIGH: 50000
   };
@@ -18,39 +18,33 @@
   var mapContainer = document.querySelector('.map__pins');
 
   function filterByType(houseData) {
-    if (typeNode.value === 'any') {
-      return true;
-    }
-
-    return typeNode.value === houseData.offer.type.toString();
+    return typeNode.value === 'any'
+      ? true
+      : typeNode.value === houseData.offer.type.toString();
   }
 
   function filterByPrice(houseData) {
     if (priceNode.value === 'any') {
       return true;
     } else if (priceNode.value === 'low') {
-      return houseData.offer.price < PRICES.LOW;
+      return houseData.offer.price < Prices.LOW;
     } else if (priceNode.value === 'middle') {
-      return houseData.offer.price >= PRICES.LOW && houseData.offer.price <= PRICES.HIGH;
+      return houseData.offer.price >= Prices.LOW && houseData.offer.price <= Prices.HIGH;
     } else {
-      return houseData.offer.price > PRICES.HIGH;
+      return houseData.offer.price > Prices.HIGH;
     }
   }
 
   function filterByGuests(houseData) {
-    if (guestsNode.value === 'any') {
-      return true;
-    } else {
-      return guestsNode.value === houseData.offer.guests.toString();
-    }
+    return guestsNode.value === 'any'
+      ? true
+      : guestsNode.value === houseData.offer.guests.toString();
   }
 
   function filterByRooms(houseData) {
-    if (roomsNode.value === 'any') {
-      return true;
-    } else {
-      return roomsNode.value === houseData.offer.rooms.toString();
-    }
+    return roomsNode.value === 'any'
+      ? true
+      : roomsNode.value === houseData.offer.rooms.toString();
   }
 
   function filterByFeatures(housesData) {
@@ -73,7 +67,7 @@
       });
   }
 
-  var handleFilter = window.utilities.debounce(function () {
+  var onChangeFilter = window.utilities.debounce(function () {
     var activeCard = document.querySelector('.card--active');
     var filteredData = window.requests.housesData
       .filter(filterByType)
@@ -104,10 +98,6 @@
     activate();
   });
 
-  // function standartFilter(filterNode) {
-  //   return filterNode.value === 'any';
-  // }
-
   function activate() {
     window.utilities
       .setDisabledStateToNodeList(filterItems, false);
@@ -130,17 +120,17 @@
         }
       });
   }
-  function initialization() {
-    typeNode.addEventListener('change', handleFilter);
-    priceNode.addEventListener('change', handleFilter);
-    roomsNode.addEventListener('change', handleFilter);
-    guestsNode.addEventListener('change', handleFilter);
+  function initializeFilter() {
+    typeNode.addEventListener('change', onChangeFilter);
+    priceNode.addEventListener('change', onChangeFilter);
+    roomsNode.addEventListener('change', onChangeFilter);
+    guestsNode.addEventListener('change', onChangeFilter);
 
     // Привожу коллекцию нод к простому массиву
     // и навешиваю слушателя на каждый чекбокс
     Array.from(featuresNodes)
       .forEach(function (featureItem) {
-        featureItem.addEventListener('click', handleFilter);
+        featureItem.addEventListener('click', onChangeFilter);
       });
 
     // Снятие disabled состояние с полей фильтра
@@ -152,7 +142,7 @@
 
   window.filters = {
     resetFilters: resetFilters,
-    initialization: initialization,
+    initializeFilter: initializeFilter,
     activate: activate,
     deactivate: deactivate,
     PIN_LIMITS: PIN_LIMITS

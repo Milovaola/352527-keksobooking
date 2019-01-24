@@ -13,7 +13,7 @@
     window.map.renderPins(limitedResponse);
 
     // Активируем форму фильтра
-    window.filters.initialization();
+    window.filters.initializeFilter();
 
   };
 

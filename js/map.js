@@ -62,6 +62,7 @@
     // Наполняю контейнер карточками
     cardsContainer.appendChild(cardList);
   }
+
   // Удаление пинов с карты
   function pinsDelete() {
     var mapPinsItems = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -69,11 +70,12 @@
       mapPinsItems[i].remove();
     }
   }
+
   // Удаление с карты карточек объявления
   function deleteCardOnMap() {
-    var mapCard = document.querySelector('.card--active');
-    if (mapCard) {
-      mapCard.remove();
+    var activeCard = document.querySelector('.card--active');
+    if (activeCard) {
+      activeCard.remove();
     }
   }
 

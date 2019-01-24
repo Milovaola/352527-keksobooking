@@ -4,7 +4,7 @@
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   var avatarChooser = document.querySelector('.ad-form__field input[type=file]');
-  var previewAvatar = document.querySelector('.ad-form-header__preview');
+  var previewAvatar = document.querySelector('.ad-form-header__preview img');
   var fotoChooser = document.querySelector('.ad-form__upload input[type=file]');
   var previewFoto = document.querySelector('.ad-form__photo');
 
@@ -27,6 +27,7 @@
     }
   });
   fotoChooser.addEventListener('change', function () {
+
     var foto = fotoChooser.files[0];
     var fotoName = foto.name.toLowerCase();
 
@@ -38,7 +39,11 @@
       var reader = new FileReader();
 
       reader.addEventListener('load', function () {
-        previewFoto.src = reader.result;
+        var fotoHouses = document.createElement('img');
+        fotoHouses.width = 70;
+        fotoHouses.height = 70;
+        fotoHouses.src = reader.result;
+        previewFoto.appendChild(fotoHouses);
       });
 
       reader.readAsDataURL(foto);

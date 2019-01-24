@@ -12,7 +12,7 @@
     node.classList.toggle('card--active');
   }
   // Перевод типа жилья на русский язык
-  function translate(offerType) {
+  function getTranslate(offerType) {
     if (offerType === 'flat') {
       return 'Квартира';
     } else if (offerType === 'bungalo') {
@@ -30,7 +30,7 @@
     return price + ' ₽/ночь';
   }
   // Функция вывода строки по гостям и комнатам определенного вида
-  function valueRoomsAndGuests(rooms, guests) {
+  function uniteValueRoomsAndGuests(rooms, guests) {
     return rooms + ' комнаты для ' + guests + ' гостей';
   }
   // Функция вывода строки времени заезда и выезда
@@ -82,7 +82,16 @@
         }
       });
   }
+  // Скрытие карточки при нажатии клавиши escape
+  document.addEventListener('keydown', function (evt) {
+    var activeCard = document.querySelector('.card--active');
+    var activePin = document.querySelector('.map__pin--active');
 
+    if (evt.keyCode === 27 && activeCard) {
+      activePin.classList.remove('map__pin--active');
+      window.utilities.toggleDisplay(activeCard);
+    }
+  });
   // Сообщение при отправке запроса на сервер
   function sendMessage(selector, className) {
     var messageTemplate = document.querySelector(selector)
@@ -105,9 +114,9 @@
 
   window.utilities = {
     toggleDisplay: toggleDisplay,
-    translate: translate,
+    getTranslate: getTranslate,
     getPrice: getPrice,
-    valueRoomsAndGuests: valueRoomsAndGuests,
+    uniteValueRoomsAndGuests: uniteValueRoomsAndGuests,
     timeCheck: timeCheck,
     removeClass: removeClass,
     addClass: addClass,
