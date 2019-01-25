@@ -67,7 +67,7 @@
       if (card) {
         activePin.classList.remove('map__pin--active');
         card.remove();
-        document.removeEventListener('keydown', window.utilities.removeCardByEsc);
+        document.removeEventListener('keydown', window.utilities.onEscRemoveCard);
       }
     });
 

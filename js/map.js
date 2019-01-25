@@ -29,7 +29,7 @@
       childNode.parentNode.removeChild(childNode);
     } else {
       parentNode.appendChild(childNode);
-      document.addEventListener('keydown', window.utilities.removeCardByEsc);
+      document.addEventListener('keydown', window.utilities.onEscRemoveCard);
     }
   }
 

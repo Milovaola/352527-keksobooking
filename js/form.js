@@ -49,7 +49,7 @@
   }
 
   // Функция валидации
-  function getValidation() {
+  function onValidate() {
     // Проверка на соответствие цены
     if (price.value >= price.max || price.value <= price.min) {
       return false;
@@ -58,7 +58,7 @@
     return true;
   }
 
-  houseType.addEventListener('onSubmit', getValidation);
+  houseType.addEventListener('onSubmit', onValidate);
 
   // Зависимость времени въезда и выезда
   var timeIn = document.getElementById('timein');
@@ -92,8 +92,9 @@
       capacityType.value = ratioRoomGuest[input][j];
     }
   }
-  roomType.addEventListener('change', function () {
+  roomType.addEventListener('change', function (evt) {
     disableСapacity(roomType.value);
+    evt.target.setCustomValidity('');
   });
 
   var submitForm = document.querySelector('.ad-form__submit');
@@ -111,10 +112,6 @@
       capacityType.setCustomValidity('Для этого значения нужно выбрать 100 комнат');
     }
   }
-
-  roomType.addEventListener('change', function (evt) {
-    evt.target.setCustomValidity('');
-  });
 
   capacityType.addEventListener('change', function (evt) {
     evt.target.setCustomValidity('');

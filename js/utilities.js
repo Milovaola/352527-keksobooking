@@ -74,14 +74,14 @@
         }
       });
   }
-  function removeCardByEsc(evt) {
+  function onEscRemoveCard(evt) {
     var activePin = document.querySelector('.map__pin--active');
     var activeCard = document.querySelector('.map__card');
 
     if (evt.keyCode === ESC_KEYCODE && activeCard) {
       activePin.classList.remove('map__pin--active');
       activeCard.remove();
-      document.removeEventListener('keydown', removeCardByEsc);
+      document.removeEventListener('keydown', onEscRemoveCard);
     }
   }
 
@@ -94,14 +94,14 @@
     var mainBlock = document.querySelector('main');
     mainBlock.insertAdjacentElement('afterbegin', messageElement);
 
-    function removeMessageByEsc(evt) {
+    function onEscRemoveNotify(evt) {
       if (evt.keyCode === ESC_KEYCODE && messageElement) {
         messageElement.remove();
         removeEvent();
       }
     }
 
-    function removeMessageByClick() {
+    function onButtonClickRemoveNotify() {
       if (messageElement) {
         messageElement.remove();
         removeEvent();
@@ -109,17 +109,17 @@
     }
 
     function removeEvent() {
-      document.removeEventListener('keydown', removeMessageByEsc);
-      document.removeEventListener('click', removeMessageByClick);
+      document.removeEventListener('keydown', onEscRemoveNotify);
+      document.removeEventListener('click', onButtonClickRemoveNotify);
     }
 
     messageElement.classList.remove('hidden');
-    document.addEventListener('keydown', removeMessageByEsc);
-    document.addEventListener('click', removeMessageByClick);
+    document.addEventListener('keydown', onEscRemoveNotify);
+    document.addEventListener('click', onButtonClickRemoveNotify);
   }
 
   window.utilities = {
-    removeCardByEsc: removeCardByEsc,
+    onEscRemoveCard: onEscRemoveCard,
     getTranslate: getTranslate,
     getPrice: getPrice,
     uniteValueRoomsAndGuests: uniteValueRoomsAndGuests,
