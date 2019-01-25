@@ -32,19 +32,19 @@
     .content
     .querySelector('.map__card');
 
-  window.renderCard = function (houseData, index) {
+  window.renderCard = function (houseData) {
     // Клонируем DOM-узел
     var card = cardTemplate.cloneNode(true);
     var cardCloseIconNode = card.querySelector('.popup__close');
 
     // Наполняем карточку данными
     card.querySelector('.popup__avatar').src = houseData.author.avatar;
-    card.querySelector('.popup__title').innerHTML = houseData.offer.title;
-    card.querySelector('.popup__text--address').innerHTML = houseData.offer.address;
-    card.querySelector('.popup__text--price').innerHTML = window.utilities.getPrice(houseData.offer.price);
-    card.querySelector('.popup__type').innerHTML = window.utilities.getTranslate(houseData.offer.type);
-    card.querySelector('.popup__text--capacity').innerHTML = window.utilities.uniteValueRoomsAndGuests(houseData.offer.rooms, houseData.offer.guests);
-    card.querySelector('.popup__text--time').innerHTML = window.utilities.timeCheck(houseData.offer.checkin, houseData.offer.checkout);
+    card.querySelector('.popup__title').textContent = houseData.offer.title;
+    card.querySelector('.popup__text--address').textContent = houseData.offer.address;
+    card.querySelector('.popup__text--price').textContent = window.utilities.getPrice(houseData.offer.price);
+    card.querySelector('.popup__type').textContent = window.utilities.getTranslate(houseData.offer.type);
+    card.querySelector('.popup__text--capacity').textContent = window.utilities.uniteValueRoomsAndGuests(houseData.offer.rooms, houseData.offer.guests);
+    card.querySelector('.popup__text--time').textContent = window.utilities.timeCheck(houseData.offer.checkin, houseData.offer.checkout);
 
     if (houseData.offer.features && houseData.offer.features.length > 1) {
       card.querySelector('.popup__features').innerHTML = '';
@@ -59,16 +59,15 @@
     } else {
       card.querySelector('.popup__photos').remove();
     }
-    card.querySelector('.popup__description').innerHTML = houseData.offer.description;
-
-    // Скрываем и добавляем идентификатор
-    card.style.display = 'none';
-    card.setAttribute('id', 'card__' + index);
+    card.querySelector('.popup__description').textContent = houseData.offer.description;
 
     // Вешаю слушателя на крестик объявления
     cardCloseIconNode.addEventListener('click', function () {
-      card.classList.remove('card--active');
-      card.style.display = 'none';
+      var activePin = document.querySelector('.map__pin--active');
+      if (card) {
+        activePin.classList.remove('map__pin--active');
+        card.remove();
+      }
     });
 
     return card;

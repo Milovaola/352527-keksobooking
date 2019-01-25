@@ -15,7 +15,6 @@
   var featuresNodes = filterContainerNode
     .querySelector('#housing-features')
     .getElementsByTagName('input');
-  var mapContainer = document.querySelector('.map__pins');
 
   function filterByType(houseData) {
     return typeNode.value === 'any'
@@ -68,7 +67,6 @@
   }
 
   var onChangeFilter = window.utilities.debounce(function () {
-    var activeCard = document.querySelector('.card--active');
     var filteredData = window.requests.housesData
       .filter(filterByType)
       .filter(filterByType)
@@ -79,17 +77,12 @@
       .slice(0, PIN_LIMITS);
 
     // Скрытие карточки в том случае, если она открыта
-    if (activeCard) {
-      window.utilities.toggleDisplay(activeCard);
-    }
-
+    window.map.deleteCardOnMap();
     // Блокировка формы до момента загрузки всех похожих объявлений
     deactivate();
 
     // Удаление предыдущих пинов с карты
-    while (mapContainer.firstChild) {
-      mapContainer.removeChild(mapContainer.firstChild);
-    }
+    window.map.pinsDelete();
 
     // Добавление пинов, полученных в результате фильтрации
     window.map.renderPins(filteredData);
@@ -137,13 +130,12 @@
     activate();
   }
 
-  // // Перевод формы в disabled по-умолчанию
+  //  Перевод формы в disabled по-умолчанию
   deactivate();
 
   window.filters = {
     resetFilters: resetFilters,
     initializeFilter: initializeFilter,
-    activate: activate,
     deactivate: deactivate,
     PIN_LIMITS: PIN_LIMITS
   };

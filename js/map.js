@@ -2,65 +2,50 @@
 // Управление пином и карточкой объявления
 
 (function () {
-  function setPinHandler(node, index) {
-    node.addEventListener('click', function () {
-      var activePin = document.querySelector('.map__pin--active');
-      var card = document.getElementById('card__' + index);
-      var activeCard = document.querySelector('.card--active');
+
+  function setPinHandler(pin, data) {
+    var cardContainer = document.getElementsByClassName('map')[0];
+    var card = window.renderCard(data);
+
+    pin.addEventListener('click', function () {
+      var activePin = cardContainer.querySelector('.map__pin--active');
 
       // Сравниваем два DOM узла, если вдруг мы кликнем не по той же карточке
-      if (activePin && activePin !== node) {
+      if (activePin && activePin !== pin) {
         activePin.classList.remove('map__pin--active');
-        node.classList.add('map__pin--active');
+        pin.classList.add('map__pin--active');
 
-        window.utilities.toggleDisplay(activeCard);
-        window.utilities.toggleDisplay(card);
+        deleteCardOnMap();
       } else {
-        node.classList.toggle('map__pin--active');
-        window.utilities.toggleDisplay(card);
+        pin.classList.toggle('map__pin--active');
       }
+
+      toggleRender(cardContainer, card);
     });
+  }
+
+  function toggleRender(parentNode, childNode) {
+    if (parentNode.contains(childNode)) {
+      childNode.parentNode.removeChild(childNode);
+    } else {
+      parentNode.appendChild(childNode);
+    }
   }
 
   function renderPins(data) {
     var pinList = document.createDocumentFragment();
-    var cardList = document.createDocumentFragment();
 
     for (var i = 0; i < data.length; i++) {
       var pinNode = window.renderPin(data[i]);
-      var cardNode = window.renderCard(data[i], i);
 
       // Вешаю слушателя на пин
-      setPinHandler(pinNode, i);
+      setPinHandler(pinNode, data[i]);
 
       pinList.appendChild(pinNode);
-      cardList.appendChild(cardNode);
     }
 
-    document.querySelector('.map__pins')
+    window.form.mapPins
       .appendChild(pinList);
-    renderCards(cardList);
-  }
-
-  function renderCards(cardList) {
-    var cardsContainer = document.getElementsByClassName('map__cards')[0];
-
-    // Если контейнера для карточек не существует на странице
-    // создаю его и задаю ему класс, а если существует
-    // очищаю его содержимое
-    if (!cardsContainer) {
-      cardsContainer = document.createElement('div');
-      cardsContainer.className = 'map__cards';
-
-      // Добавляю контейнер на страницу
-      document.getElementsByClassName('map')[0]
-        .appendChild(cardsContainer);
-    } else {
-      cardsContainer.innerHTML = '';
-    }
-
-    // Наполняю контейнер карточками
-    cardsContainer.appendChild(cardList);
   }
 
   // Удаление пинов с карты
@@ -73,7 +58,7 @@
 
   // Удаление с карты карточек объявления
   function deleteCardOnMap() {
-    var activeCard = document.querySelector('.card--active');
+    var activeCard = document.querySelector('.map__card');
     if (activeCard) {
       activeCard.remove();
     }
@@ -87,8 +72,8 @@
     pinsDelete();
     deleteCardOnMap();
     window.utilities.addClass('.map', 'map--faded');
-    window.pin.style.top = 375 + 'px';
-    window.pin.style.left = 570 + 'px';
+    window.pin.style.top = window.form.DEFAULT_MAIN_PIN_Y + 'px';
+    window.pin.style.left = window.form.DEFAULT_MAIN_PIN_X + 'px';
     window.isActive = false;
     window.filters.deactivate();
     window.filters.resetFilters();

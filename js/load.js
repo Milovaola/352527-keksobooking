@@ -1,8 +1,10 @@
 'use strict';
 
 (function () {
-  var urlLoad = 'https://js.dump.academy/keksobooking/data';
-  var urlUpload = 'https://js.dump.academy/keksobooking';
+  var URL_LOAD = 'https://js.dump.academy/keksobooking/data';
+  var URL_UPLOAD = 'https://js.dump.academy/keksobooking';
+  var STATUS_SUCCESS = 200;
+  var TIMEOUT = 10000;
 
 
   function serverRequest(method, URL, onSuccess, onError, data) {
@@ -10,7 +12,7 @@
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === STATUS_SUCCESS) {
         onSuccess(xhr.response);
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -23,7 +25,7 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 10000;
+    xhr.timeout = TIMEOUT;
 
     xhr.open(method, URL);
     if (method === 'POST') {
@@ -34,10 +36,10 @@
   }
 
   function load(onSuccess, onError) {
-    serverRequest('GET', urlLoad, onSuccess, onError);
+    serverRequest('GET', URL_LOAD, onSuccess, onError);
   }
   function upload(onSuccess, onError, data) {
-    serverRequest('POST', urlUpload, onSuccess, onError, data);
+    serverRequest('POST', URL_UPLOAD, onSuccess, onError, data);
   }
   window.load = {
     load: load,

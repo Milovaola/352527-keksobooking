@@ -51,6 +51,7 @@
           fieldsetItem.removeAttribute('disabled');
         });
       window.isActive = true;
+      window.updatePhoto.activate();
     }
 
     relocate(newLocation);
@@ -59,8 +60,7 @@
   function relocate(newLocation) {
     pin.style.left = newLocation.x + 'px';
     pin.style.top = newLocation.y + 'px';
-
-    window.form.addValue.setAttribute('value', Math.round((newLocation.x + pin.offsetWidth / 2)) + ', ' + (newLocation.y + pin.offsetHeight / 2));
+    window.form.addValue.value = Math.round((newLocation.x + pin.offsetWidth / 2)) + ', ' + (newLocation.y + pin.offsetHeight / 2);
   }
 
   pin.addEventListener('mousedown', function (evt) {
