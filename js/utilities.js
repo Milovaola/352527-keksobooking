@@ -12,7 +12,7 @@
     node.classList.toggle('card--active');
   }
   // Перевод типа жилья на русский язык
-  function translate(offerType) {
+  function getTranslate(offerType) {
     if (offerType === 'flat') {
       return 'Квартира';
     } else if (offerType === 'bungalo') {
@@ -30,7 +30,7 @@
     return price + ' ₽/ночь';
   }
   // Функция вывода строки по гостям и комнатам определенного вида
-  function valueRoomsAndGuests(rooms, guests) {
+  function uniteValueRoomsAndGuests(rooms, guests) {
     return rooms + ' комнаты для ' + guests + ' гостей';
   }
   // Функция вывода строки времени заезда и выезда
@@ -40,6 +40,10 @@
   // Убираем класс неактивного состояния
   function removeClass(selector, className) {
     document.querySelector(selector).classList.remove(className);
+  }
+  // Добавляем класс неактивного состояния
+  function addClass(selector, className) {
+    document.querySelector(selector).classList.add(className);
   }
   // Перевод нод в неактивное состояние
   function toggleNodesDisabled(nodes) {
@@ -78,16 +82,47 @@
         }
       });
   }
+  // Скрытие карточки при нажатии клавиши escape
+  document.addEventListener('keydown', function (evt) {
+    var activeCard = document.querySelector('.card--active');
+    var activePin = document.querySelector('.map__pin--active');
+
+    if (evt.keyCode === 27 && activeCard) {
+      activePin.classList.remove('map__pin--active');
+      window.utilities.toggleDisplay(activeCard);
+    }
+  });
+  // Сообщение при отправке запроса на сервер
+  function sendMessage(selector, className) {
+    var messageTemplate = document.querySelector(selector)
+      .content
+      .querySelector(className);
+    var messageElement = messageTemplate.cloneNode(true);
+    var mainBlock = document.querySelector('main');
+    mainBlock.insertAdjacentElement('afterbegin', messageElement);
+
+    messageElement.classList.remove('hidden');
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === 27 && messageElement) {
+        messageElement.classList.add('hidden');
+      }
+    });
+    document.addEventListener('click', function () {
+      messageElement.classList.add('hidden');
+    });
+  }
 
   window.utilities = {
     toggleDisplay: toggleDisplay,
-    translate: translate,
+    getTranslate: getTranslate,
     getPrice: getPrice,
-    valueRoomsAndGuests: valueRoomsAndGuests,
+    uniteValueRoomsAndGuests: uniteValueRoomsAndGuests,
     timeCheck: timeCheck,
     removeClass: removeClass,
+    addClass: addClass,
     toggleNodesDisabled: toggleNodesDisabled,
     debounce: debounce,
     setDisabledStateToNodeList: setDisabledStateToNodeList,
+    sendMessage: sendMessage
   };
 })();

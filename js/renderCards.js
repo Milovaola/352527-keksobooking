@@ -42,8 +42,8 @@
     card.querySelector('.popup__title').innerHTML = houseData.offer.title;
     card.querySelector('.popup__text--address').innerHTML = houseData.offer.address;
     card.querySelector('.popup__text--price').innerHTML = window.utilities.getPrice(houseData.offer.price);
-    card.querySelector('.popup__type').innerHTML = window.utilities.translate(houseData.offer.type);
-    card.querySelector('.popup__text--capacity').innerHTML = window.utilities.valueRoomsAndGuests(houseData.offer.rooms, houseData.offer.guests);
+    card.querySelector('.popup__type').innerHTML = window.utilities.getTranslate(houseData.offer.type);
+    card.querySelector('.popup__text--capacity').innerHTML = window.utilities.uniteValueRoomsAndGuests(houseData.offer.rooms, houseData.offer.guests);
     card.querySelector('.popup__text--time').innerHTML = window.utilities.timeCheck(houseData.offer.checkin, houseData.offer.checkout);
 
     if (houseData.offer.features && houseData.offer.features.length > 1) {

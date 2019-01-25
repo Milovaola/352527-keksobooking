@@ -1,7 +1,7 @@
 'use strict';
 (function () {
   var successHandler = function (response) {
-    var limitedResponse = window.filters.filterByLimit(response);
+    var limitedResponse = response.slice(0, window.filters.PIN_LIMITS);
 
     // Переводим карту в активное состояние
     window.utilities.removeClass('.map', 'map--faded');
@@ -13,19 +13,12 @@
     window.map.renderPins(limitedResponse);
 
     // Активируем форму фильтра
-    window.filters.initialization();
+    window.filters.initializeFilter();
+
   };
 
-  var errorHandler = function (errorMessage) {
-    var mainPin = document.querySelector('.map__pin--main');
-    mainPin.style.display = 'none';
-    var errorTemplate = document.querySelector('#error')
-      .content
-      .querySelector('.error');
-    var errorElement = errorTemplate.cloneNode(true);
-
-    errorElement.querySelector('.error__message').textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', errorElement);
+  var errorHandler = function () {
+    window.utilities.sendMessage('#error', '.error');
   };
 
   window.requests = {
