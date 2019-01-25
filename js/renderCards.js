@@ -28,7 +28,7 @@
   }
 
   // Формирование карточек
-  var cardTemplate = document.getElementById('card')
+  var cardTemplate = document.querySelector('#card')
     .content
     .querySelector('.map__card');
 

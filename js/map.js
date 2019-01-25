@@ -4,7 +4,7 @@
 (function () {
 
   function setPinHandler(pin, data) {
-    var cardContainer = document.getElementsByClassName('map')[0];
+    var cardContainer = document.querySelector('.map');
     var card = window.renderCard(data);
 
     pin.addEventListener('click', function () {

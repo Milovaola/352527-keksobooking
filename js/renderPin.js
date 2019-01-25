@@ -9,7 +9,7 @@
 
   window.renderPin = function (pin) {
     var pinElement = similarPinTemplate.cloneNode(true);
-    var pinImage = pinElement.getElementsByTagName('img')[0];
+    var pinImage = pinElement.querySelector('img');
     pinElement.innerHTML = '';
 
     pinElement.style.left = pin.location.x + 'px';
