@@ -81,7 +81,7 @@
 
     if (evt.keyCode === ESC_KEYCODE && activeCard) {
       activePin.classList.remove('map__pin--active');
-      activeCard.parentNode.removeChild(activeCard);
+      activeCard.remove();
     }
   });
   // Сообщение при отправке запроса на сервер

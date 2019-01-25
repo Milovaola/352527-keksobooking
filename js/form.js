@@ -1,18 +1,28 @@
 'use strict';
 (function () {
+  var DEFAULT_MAIN_PIN_X = 570;
+  var DEFAULT_MAIN_PIN_Y = 375;
+  var DEFAULT_PIN = DEFAULT_MAIN_PIN_X + ', ' + DEFAULT_MAIN_PIN_Y;
+  var Prices = {
+    bungalo: 0,
+    flat: 1000,
+    house: 5000,
+    palace: 10000
+  };
+
   var formName = document.querySelector('.ad-form');
   var adFormFieldset = formName.getElementsByTagName('fieldset');
   var addValue = document.getElementById('address');
   var addPrice = document.getElementById('price');
-  var DEFAULT_PIN = '570, 375';
+  var mapPins = document.querySelector('.map__pins');
+
 
   window.utilities.toggleNodesDisabled(adFormFieldset);
 
   function setDefaultState() {
     addValue.value = DEFAULT_PIN;
     addPrice.placeholder = '1000';
-    document.querySelector('.map__pins')
-      .appendChild(window.pin);
+    mapPins.appendChild(window.pin);
   }
 
   setDefaultState();
@@ -20,13 +30,6 @@
   // Зависимость изменения цены от типа жилья
   var houseType = document.getElementById('type');
   houseType.addEventListener('change', onChangeHouseType);
-
-  var Prices = {
-    bungalo: 0,
-    flat: 1000,
-    house: 5000,
-    palace: 10000
-  };
 
   var price = document.getElementById('price');
 
@@ -128,8 +131,8 @@
     window.map.deactivateMap();
     setDefaultState();
     window.utilities.sendMessage('#success', '.success');
-    window.removeImages();
-
+    window.updatePhoto.removeImages();
+    window.updatePhoto.activate();
   }
 
   function submitError() {
@@ -150,10 +153,14 @@
     event.preventDefault();
     setDefaultState();
     window.map.deactivateMap();
-    window.removeImages();
+    window.updatePhoto.removeImages();
+    window.updatePhoto.activate();
   });
 
   window.form = {
+    DEFAULT_MAIN_PIN_X: DEFAULT_MAIN_PIN_X,
+    DEFAULT_MAIN_PIN_Y: DEFAULT_MAIN_PIN_Y,
+    mapPins: mapPins,
     onChangeHouseType: onChangeHouseType,
     formName: formName,
     adFormFieldset: adFormFieldset,

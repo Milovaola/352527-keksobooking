@@ -51,6 +51,7 @@
           fieldsetItem.removeAttribute('disabled');
         });
       window.isActive = true;
+      window.updatePhoto.activate();
     }
 
     relocate(newLocation);

@@ -63,7 +63,11 @@
 
     // Вешаю слушателя на крестик объявления
     cardCloseIconNode.addEventListener('click', function () {
-      card.parentNode.removeChild(card);
+      var activePin = document.querySelector('.map__pin--active');
+      if (card) {
+        activePin.classList.remove('map__pin--active');
+        card.remove();
+      }
     });
 
     return card;

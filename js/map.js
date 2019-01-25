@@ -3,25 +3,19 @@
 
 (function () {
 
-  var DEFAULT_MAIN_PIN_X = 570;
-  var DEFAULT_MAIN_PIN_Y = 375;
-
   function setPinHandler(pin, data) {
     var cardContainer = document.getElementsByClassName('map')[0];
     var card = window.renderCard(data);
 
     pin.addEventListener('click', function () {
       var activePin = cardContainer.querySelector('.map__pin--active');
-      var activeCard = cardContainer.querySelector('.map__card');
 
       // Сравниваем два DOM узла, если вдруг мы кликнем не по той же карточке
       if (activePin && activePin !== pin) {
         activePin.classList.remove('map__pin--active');
         pin.classList.add('map__pin--active');
 
-        if (activeCard) {
-          activeCard.parentNode.removeChild(activeCard);
-        }
+        deleteCardOnMap();
       } else {
         pin.classList.toggle('map__pin--active');
       }
@@ -50,7 +44,7 @@
       pinList.appendChild(pinNode);
     }
 
-    document.querySelector('.map__pins')
+    window.form.mapPins
       .appendChild(pinList);
   }
 
@@ -78,8 +72,8 @@
     pinsDelete();
     deleteCardOnMap();
     window.utilities.addClass('.map', 'map--faded');
-    window.pin.style.top = DEFAULT_MAIN_PIN_Y + 'px';
-    window.pin.style.left = DEFAULT_MAIN_PIN_X + 'px';
+    window.pin.style.top = window.form.DEFAULT_MAIN_PIN_Y + 'px';
+    window.pin.style.left = window.form.DEFAULT_MAIN_PIN_X + 'px';
     window.isActive = false;
     window.filters.deactivate();
     window.filters.resetFilters();
