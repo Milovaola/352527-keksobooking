@@ -128,6 +128,7 @@
     window.map.deactivateMap();
     setDefaultState();
     window.utilities.sendMessage('#success', '.success');
+    window.removeImages();
 
   }
 
@@ -149,6 +150,7 @@
     event.preventDefault();
     setDefaultState();
     window.map.deactivateMap();
+    window.removeImages();
   });
 
   window.form = {
