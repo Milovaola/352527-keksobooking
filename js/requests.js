@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  var successHandler = function (response) {
+  function successHandler(response) {
     var limitedResponse = response.slice(0, window.filters.PIN_LIMITS);
 
     // Переводим карту в активное состояние
@@ -15,11 +15,11 @@
     // Активируем форму фильтра
     window.filters.initializeFilter();
 
-  };
+  }
 
-  var errorHandler = function () {
+  function errorHandler() {
     window.utilities.sendMessage('#error', '.error');
-  };
+  }
 
   window.requests = {
     housesData: null,

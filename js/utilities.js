@@ -94,15 +94,28 @@
     var mainBlock = document.querySelector('main');
     mainBlock.insertAdjacentElement('afterbegin', messageElement);
 
-    messageElement.classList.remove('hidden');
-    document.addEventListener('keydown', function (evt) {
+    function removeMessageByEsc(evt) {
       if (evt.keyCode === ESC_KEYCODE && messageElement) {
-        messageElement.classList.add('hidden');
+        messageElement.remove();
+        removeEvent();
       }
-    });
-    document.addEventListener('click', function () {
-      messageElement.classList.add('hidden');
-    });
+    }
+
+    function removeMessageByClick() {
+      if (messageElement) {
+        messageElement.remove();
+        removeEvent();
+      }
+    }
+
+    function removeEvent() {
+      document.removeEventListener('keydown', removeMessageByEsc);
+      document.removeEventListener('click', removeMessageByClick);
+    }
+
+    messageElement.classList.remove('hidden');
+    document.addEventListener('keydown', removeMessageByEsc);
+    document.addEventListener('click', removeMessageByClick);
   }
 
   window.utilities = {
