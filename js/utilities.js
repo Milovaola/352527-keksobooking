@@ -1,16 +1,9 @@
 'use strict';
 
 (function () {
+  var DEBOUNCE_INTERVAL = 500;
+  var ESC_KEYCODE = 27;
 
-  // Функция переключения
-  function toggleDisplay(node) {
-    if (node.style.display === 'block') {
-      node.style.display = 'none';
-    } else {
-      node.style.display = 'block';
-    }
-    node.classList.toggle('card--active');
-  }
   // Перевод типа жилья на русский язык
   function getTranslate(offerType) {
     if (offerType === 'flat') {
@@ -53,7 +46,6 @@
   }
   // функция устранения дребезга
   function debounce(cb) {
-    var DEBOUNCE_INTERVAL = 500;
     var lastTimeout = null;
 
     return function () {
@@ -84,12 +76,12 @@
   }
   // Скрытие карточки при нажатии клавиши escape
   document.addEventListener('keydown', function (evt) {
-    var activeCard = document.querySelector('.card--active');
     var activePin = document.querySelector('.map__pin--active');
+    var activeCard = document.querySelector('.map__card');
 
-    if (evt.keyCode === 27 && activeCard) {
+    if (evt.keyCode === ESC_KEYCODE && activeCard) {
       activePin.classList.remove('map__pin--active');
-      window.utilities.toggleDisplay(activeCard);
+      activeCard.parentNode.removeChild(activeCard);
     }
   });
   // Сообщение при отправке запроса на сервер
@@ -103,7 +95,7 @@
 
     messageElement.classList.remove('hidden');
     document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === 27 && messageElement) {
+      if (evt.keyCode === ESC_KEYCODE && messageElement) {
         messageElement.classList.add('hidden');
       }
     });
@@ -113,7 +105,6 @@
   }
 
   window.utilities = {
-    toggleDisplay: toggleDisplay,
     getTranslate: getTranslate,
     getPrice: getPrice,
     uniteValueRoomsAndGuests: uniteValueRoomsAndGuests,

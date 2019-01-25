@@ -2,6 +2,10 @@
 
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var fotoParameters = {
+    WIDTH: '70px',
+    HEIGHT: '70px'
+  };
 
   var avatarChooser = document.querySelector('.ad-form__field input[type=file]');
   var previewAvatar = document.querySelector('.ad-form-header__preview img');
@@ -40,8 +44,8 @@
 
       reader.addEventListener('load', function () {
         var fotoHouses = document.createElement('img');
-        fotoHouses.width = 70;
-        fotoHouses.height = 70;
+        fotoHouses.width = fotoParameters.WIDTH;
+        fotoHouses.height = fotoParameters.HEIGHT;
         fotoHouses.src = reader.result;
         previewFoto.appendChild(fotoHouses);
       });

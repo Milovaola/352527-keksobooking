@@ -3,23 +3,25 @@
   var formName = document.querySelector('.ad-form');
   var adFormFieldset = formName.getElementsByTagName('fieldset');
   var addValue = document.getElementById('address');
+  var addPrice = document.getElementById('price');
+  var DEFAULT_PIN = '570, 375';
 
   window.utilities.toggleNodesDisabled(adFormFieldset);
 
   function setDefaultState() {
-    addValue.setAttribute('value', '570, 375');
-    var addPrice = document.getElementById('price');
-    addPrice.setAttribute('placeholder', '1000');
+    addValue.value = DEFAULT_PIN;
+    addPrice.placeholder = '1000';
     document.querySelector('.map__pins')
       .appendChild(window.pin);
   }
+
   setDefaultState();
 
   // Зависимость изменения цены от типа жилья
   var houseType = document.getElementById('type');
   houseType.addEventListener('change', onChangeHouseType);
 
-  var Types = {
+  var Prices = {
     bungalo: 0,
     flat: 1000,
     house: 5000,
@@ -30,17 +32,17 @@
 
   function onChangeHouseType() {
     if (houseType.value === 'bungalo') {
-      price.setAttribute('min', Types.bungalo);
-      price.placeholder = Types.bungalo;
+      price.setAttribute('min', Prices.bungalo);
+      price.placeholder = Prices.bungalo;
     } else if (houseType.value === 'flat') {
-      price.setAttribute('min', Types.flat);
-      price.placeholder = Types.flat;
+      price.setAttribute('min', Prices.flat);
+      price.placeholder = Prices.flat;
     } else if (houseType.value === 'house') {
-      price.setAttribute('min', Types.house);
-      price.placeholder = Types.house;
+      price.setAttribute('min', Prices.house);
+      price.placeholder = Prices.house;
     } else if (houseType.value === 'palace') {
-      price.setAttribute('min', Types.palace);
-      price.placeholder = Types.palace;
+      price.setAttribute('min', Prices.palace);
+      price.placeholder = Prices.palace;
     }
   }
 
@@ -72,19 +74,20 @@
   var roomType = document.getElementById('room_number');
   var capacityType = document.getElementById('capacity');
   var capacityOptions = capacityType.querySelectorAll('option');
-  var RoomsTypeValue = {
+  var ratioRoomGuest = {
     1: [1],
     2: [1, 2],
     3: [1, 2, 3],
     100: [0]
   };
+
   function disableСapacity(input) {
     for (var i = 0; i < capacityOptions.length; i++) {
       capacityOptions[i].disabled = true;
     }
-    for (var j = 0; j < RoomsTypeValue[input].length; j++) {
-      capacityType.querySelector('option' + '[value="' + RoomsTypeValue[input][j] + '"]').disabled = false;
-      capacityType.value = RoomsTypeValue[input][j];
+    for (var j = 0; j < ratioRoomGuest[input].length; j++) {
+      capacityType.querySelector('option' + '[value="' + ratioRoomGuest[input][j] + '"]').disabled = false;
+      capacityType.value = ratioRoomGuest[input][j];
     }
   }
   roomType.addEventListener('change', function () {
@@ -95,11 +98,15 @@
   // Проверяем соответствие указанному количеству комнат и гостей
   // в случае несоответствия - вывожу сообщение
   function capacityValidationCheck() {
-    var capacityGuests = RoomsTypeValue[roomType.value];
-    if (capacityGuests.forEach(+capacityType.value)) {
+    var capacityGuests = ratioRoomGuest[roomType.value];
+    var capacityValidation = capacityGuests.every(function (capacity) {
+      return +capacityType.value > capacity;
+    });
+
+    if (capacityValidation) {
       capacityType.setCustomValidity('Выберите меньшее количество гостей');
-    } else {
-      capacityType.setCustomValidity('');
+    } else if (+capacityType.value === 0 && +roomType.value !== 100) {
+      capacityType.setCustomValidity('Для этого значения нужно выбрать 100 комнат');
     }
   }
 
@@ -138,7 +145,8 @@
   // Сброс формы
   var resetForm = document.querySelector('.ad-form__reset');
 
-  resetForm.addEventListener('click', function () {
+  resetForm.addEventListener('click', function (event) {
+    event.preventDefault();
     setDefaultState();
     window.map.deactivateMap();
   });
