@@ -74,16 +74,17 @@
         }
       });
   }
-  // Скрытие карточки при нажатии клавиши escape
-  document.addEventListener('keydown', function (evt) {
+  function removeCardByEsc(evt) {
     var activePin = document.querySelector('.map__pin--active');
     var activeCard = document.querySelector('.map__card');
 
     if (evt.keyCode === ESC_KEYCODE && activeCard) {
       activePin.classList.remove('map__pin--active');
       activeCard.remove();
+      document.removeEventListener('keydown', removeCardByEsc);
     }
-  });
+  }
+
   // Сообщение при отправке запроса на сервер
   function sendMessage(selector, className) {
     var messageTemplate = document.querySelector(selector)
@@ -105,6 +106,7 @@
   }
 
   window.utilities = {
+    removeCardByEsc: removeCardByEsc,
     getTranslate: getTranslate,
     getPrice: getPrice,
     uniteValueRoomsAndGuests: uniteValueRoomsAndGuests,
