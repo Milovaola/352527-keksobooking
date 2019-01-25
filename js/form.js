@@ -17,12 +17,11 @@
   var mapPins = document.querySelector('.map__pins');
 
 
-  window.utilities.toggleNodesDisabled(adFormFieldset);
-
   function setDefaultState() {
     addValue.value = DEFAULT_PIN;
     addPrice.placeholder = '1000';
     mapPins.appendChild(window.pin);
+    window.utilities.toggleNodesDisabled(adFormFieldset);
   }
 
   setDefaultState();

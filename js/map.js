@@ -73,6 +73,7 @@
     pinsDelete();
     deleteCardOnMap();
     window.utilities.addClass('.map', 'map--faded');
+    window.form.formName.classList.add('ad-form--disabled');
     window.pin.style.top = window.form.DEFAULT_MAIN_PIN_Y + 'px';
     window.pin.style.left = window.form.DEFAULT_MAIN_PIN_X + 'px';
     window.isActive = false;
