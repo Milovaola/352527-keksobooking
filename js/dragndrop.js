@@ -74,6 +74,5 @@
     document.removeEventListener('mousemove', moveAt);
     document.removeEventListener('mouseup', onMouseUp);
   }
-
 })();
 

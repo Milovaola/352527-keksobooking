@@ -74,16 +74,17 @@
         }
       });
   }
-  // Скрытие карточки при нажатии клавиши escape
-  document.addEventListener('keydown', function (evt) {
+  function onEscRemoveCard(evt) {
     var activePin = document.querySelector('.map__pin--active');
     var activeCard = document.querySelector('.map__card');
 
     if (evt.keyCode === ESC_KEYCODE && activeCard) {
       activePin.classList.remove('map__pin--active');
       activeCard.remove();
+      document.removeEventListener('keydown', onEscRemoveCard);
     }
-  });
+  }
+
   // Сообщение при отправке запроса на сервер
   function sendMessage(selector, className) {
     var messageTemplate = document.querySelector(selector)
@@ -93,18 +94,32 @@
     var mainBlock = document.querySelector('main');
     mainBlock.insertAdjacentElement('afterbegin', messageElement);
 
-    messageElement.classList.remove('hidden');
-    document.addEventListener('keydown', function (evt) {
+    function onEscRemoveNotify(evt) {
       if (evt.keyCode === ESC_KEYCODE && messageElement) {
-        messageElement.classList.add('hidden');
+        messageElement.remove();
+        removeEvent();
       }
-    });
-    document.addEventListener('click', function () {
-      messageElement.classList.add('hidden');
-    });
+    }
+
+    function onButtonClickRemoveNotify() {
+      if (messageElement) {
+        messageElement.remove();
+        removeEvent();
+      }
+    }
+
+    function removeEvent() {
+      document.removeEventListener('keydown', onEscRemoveNotify);
+      document.removeEventListener('click', onButtonClickRemoveNotify);
+    }
+
+    messageElement.classList.remove('hidden');
+    document.addEventListener('keydown', onEscRemoveNotify);
+    document.addEventListener('click', onButtonClickRemoveNotify);
   }
 
   window.utilities = {
+    onEscRemoveCard: onEscRemoveCard,
     getTranslate: getTranslate,
     getPrice: getPrice,
     uniteValueRoomsAndGuests: uniteValueRoomsAndGuests,

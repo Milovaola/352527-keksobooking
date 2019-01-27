@@ -28,7 +28,7 @@
   }
 
   // Формирование карточек
-  var cardTemplate = document.getElementById('card')
+  var cardTemplate = document.querySelector('#card')
     .content
     .querySelector('.map__card');
 
@@ -67,6 +67,7 @@
       if (card) {
         activePin.classList.remove('map__pin--active');
         card.remove();
+        document.removeEventListener('keydown', window.utilities.onEscRemoveCard);
       }
     });
 

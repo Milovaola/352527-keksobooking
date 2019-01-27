@@ -11,27 +11,26 @@
   };
 
   var formName = document.querySelector('.ad-form');
-  var adFormFieldset = formName.getElementsByTagName('fieldset');
-  var addValue = document.getElementById('address');
-  var addPrice = document.getElementById('price');
+  var adFormFieldset = formName.querySelector('fieldset');
+  var addValue = document.querySelector('#address');
+  var addPrice = document.querySelector('#price');
   var mapPins = document.querySelector('.map__pins');
 
-
-  window.utilities.toggleNodesDisabled(adFormFieldset);
 
   function setDefaultState() {
     addValue.value = DEFAULT_PIN;
     addPrice.placeholder = '1000';
     mapPins.appendChild(window.pin);
+    window.utilities.toggleNodesDisabled(adFormFieldset);
   }
 
   setDefaultState();
 
   // Зависимость изменения цены от типа жилья
-  var houseType = document.getElementById('type');
+  var houseType = document.querySelector('#type');
   houseType.addEventListener('change', onChangeHouseType);
 
-  var price = document.getElementById('price');
+  var price = document.querySelector('#price');
 
   function onChangeHouseType() {
     if (houseType.value === 'bungalo') {
@@ -50,7 +49,7 @@
   }
 
   // Функция валидации
-  function getValidation() {
+  function onValidate() {
     // Проверка на соответствие цены
     if (price.value >= price.max || price.value <= price.min) {
       return false;
@@ -59,11 +58,11 @@
     return true;
   }
 
-  houseType.addEventListener('onSubmit', getValidation);
+  houseType.addEventListener('onSubmit', onValidate);
 
   // Зависимость времени въезда и выезда
-  var timeIn = document.getElementById('timein');
-  var timeOut = document.getElementById('timeout');
+  var timeIn = document.querySelector('#timein');
+  var timeOut = document.querySelector('#timeout');
 
   timeIn.addEventListener('change', onChangeTime);
   timeOut.addEventListener('change', onChangeTime);
@@ -74,8 +73,8 @@
     timeOut.value = event.target.value;
   }
   // Зависимость изменения от вместимости от количества комнат
-  var roomType = document.getElementById('room_number');
-  var capacityType = document.getElementById('capacity');
+  var roomType = document.querySelector('#room_number');
+  var capacityType = document.querySelector('#capacity');
   var capacityOptions = capacityType.querySelectorAll('option');
   var ratioRoomGuest = {
     1: [1],
@@ -93,8 +92,9 @@
       capacityType.value = ratioRoomGuest[input][j];
     }
   }
-  roomType.addEventListener('change', function () {
+  roomType.addEventListener('change', function (evt) {
     disableСapacity(roomType.value);
+    evt.target.setCustomValidity('');
   });
 
   var submitForm = document.querySelector('.ad-form__submit');
@@ -112,10 +112,6 @@
       capacityType.setCustomValidity('Для этого значения нужно выбрать 100 комнат');
     }
   }
-
-  roomType.addEventListener('change', function (evt) {
-    evt.target.setCustomValidity('');
-  });
 
   capacityType.addEventListener('change', function (evt) {
     evt.target.setCustomValidity('');

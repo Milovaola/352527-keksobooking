@@ -4,7 +4,7 @@
 (function () {
 
   function setPinHandler(pin, data) {
-    var cardContainer = document.getElementsByClassName('map')[0];
+    var cardContainer = document.querySelector('.map');
     var card = window.renderCard(data);
 
     pin.addEventListener('click', function () {
@@ -29,6 +29,7 @@
       childNode.parentNode.removeChild(childNode);
     } else {
       parentNode.appendChild(childNode);
+      document.addEventListener('keydown', window.utilities.onEscRemoveCard);
     }
   }
 
@@ -72,6 +73,7 @@
     pinsDelete();
     deleteCardOnMap();
     window.utilities.addClass('.map', 'map--faded');
+    window.form.formName.classList.add('ad-form--disabled');
     window.pin.style.top = window.form.DEFAULT_MAIN_PIN_Y + 'px';
     window.pin.style.left = window.form.DEFAULT_MAIN_PIN_X + 'px';
     window.isActive = false;

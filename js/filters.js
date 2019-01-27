@@ -14,7 +14,7 @@
   var guestsNode = filterContainerNode.querySelector('#housing-guests');
   var featuresNodes = filterContainerNode
     .querySelector('#housing-features')
-    .getElementsByTagName('input');
+    .querySelector('input');
 
   function filterByType(houseData) {
     return typeNode.value === 'any'
