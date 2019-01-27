@@ -11,7 +11,7 @@
   };
 
   var formName = document.querySelector('.ad-form');
-  var adFormFieldset = formName.querySelector('fieldset');
+  var adFormFieldset = formName.querySelectorAll('fieldset');
   var addValue = document.querySelector('#address');
   var addPrice = document.querySelector('#price');
   var mapPins = document.querySelector('.map__pins');
@@ -147,6 +147,7 @@
 
   resetForm.addEventListener('click', function (event) {
     event.preventDefault();
+    adForm.reset();
     setDefaultState();
     window.map.deactivateMap();
     window.updatePhoto.removeImages();

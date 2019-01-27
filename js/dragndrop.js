@@ -46,12 +46,11 @@
       window.form.formName.classList.remove('ad-form--disabled');
       window.form.onChangeHouseType();
       window.map.activateMap();
-      Array.from(window.form.adFormFieldset)
-        .forEach(function (fieldsetItem) {
-          fieldsetItem.removeAttribute('disabled');
-        });
       window.isActive = true;
       window.updatePhoto.activate();
+      for (var i = 0; i < window.form.adFormFieldset.length; i++) {
+        window.form.adFormFieldset[i].removeAttribute('disabled');
+      }
     }
 
     relocate(newLocation);

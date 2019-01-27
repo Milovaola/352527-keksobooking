@@ -14,7 +14,7 @@
   var guestsNode = filterContainerNode.querySelector('#housing-guests');
   var featuresNodes = filterContainerNode
     .querySelector('#housing-features')
-    .querySelector('input');
+    .querySelectorAll('input');
 
   function filterByType(houseData) {
     return typeNode.value === 'any'
@@ -49,13 +49,11 @@
   function filterByFeatures(housesData) {
     var checkedFeatures = [];
 
-    Array.from(featuresNodes)
-      .forEach(function (featureNode) {
-        if (featureNode.checked) {
-          checkedFeatures.push(featureNode.value);
-        }
-      });
-
+    for (var i = 0; i < featuresNodes.length; i++) {
+      if (featuresNodes[i].checked) {
+        checkedFeatures.push(featuresNodes[i].value);
+      }
+    }
     if (!checkedFeatures) {
       return true;
     }
@@ -104,14 +102,7 @@
   }
 
   function resetFilters() {
-    Array.from(filterContainerNode)
-      .forEach(function (filterNode) {
-        if (filterNode.type === 'select-one') {
-          filterNode.value = 'any';
-        } else {
-          filterNode.checked = false;
-        }
-      });
+    filterContainerNode.reset();
   }
   function initializeFilter() {
     typeNode.addEventListener('change', onChangeFilter);
@@ -121,10 +112,9 @@
 
     // Привожу коллекцию нод к простому массиву
     // и навешиваю слушателя на каждый чекбокс
-    Array.from(featuresNodes)
-      .forEach(function (featureItem) {
-        featureItem.addEventListener('click', onChangeFilter);
-      });
+    for (var i = 0; i < featuresNodes.length; i++) {
+      featuresNodes[i].addEventListener('click', onChangeFilter);
+    }
 
     // Снятие disabled состояние с полей фильтра
     activate();

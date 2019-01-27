@@ -65,14 +65,13 @@
       state = true;
     }
 
-    Array.from(nodeList)
-      .forEach(function (node) {
-        if (state) {
-          node.setAttribute('disabled', true);
-        } else {
-          node.removeAttribute('disabled');
-        }
-      });
+    for (var i = 0; i < nodeList.length; i++) {
+      if (state) {
+        nodeList[i].setAttribute('disabled', true);
+      } else {
+        nodeList[i].removeAttribute('disabled');
+      }
+    }
   }
   function onEscRemoveCard(evt) {
     var activePin = document.querySelector('.map__pin--active');

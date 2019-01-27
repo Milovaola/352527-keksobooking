@@ -31,8 +31,16 @@
     photoContainer.appendChild(previewPhoto);
     previewPhoto.classList.add('ad-form__photo--added');
   }
+
   function fileLoad(chooser, func) {
-    var files = Array.from(chooser.files).filter(filtrationByCorrectType);
+    var files = [];
+
+    for (var i = 0; i < chooser.files.length; i++) {
+      files.push(chooser.files[i]);
+    }
+
+    files.filter(filtrationByCorrectType);
+
     if (files) {
       files.forEach(function (it) {
         var reader = new FileReader();
