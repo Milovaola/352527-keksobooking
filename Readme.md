@@ -1,4 +1,4 @@
-# Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
+# Личный проект «Кексобукинг»
 
 * Студент: [Ольга Миловидова](https://up.htmlacademy.ru/javascript/16/user/352527).
 * Наставник: [Роман Мисюрин].
